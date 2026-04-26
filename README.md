@@ -1,9 +1,14 @@
 # put verknüpft alphanum code mit givenname: put_given_code.py funktioniert
-# get all observation: import_requests.py !!funktioniert
-# put sensdoc: actimi_to_sensdoc.py 
-# get all pat ressource: request_Pat.py 
-# verknüpfe given name mit observation m zeitstempel: Patient_main_obs holt alle Observations 
+# get all observation: import_requests.py !!funktioniert 
 
+# actimi_to_sensdoc.py funktioniert macht alles
+
+# get all pat ressource: request_Pat.py holt alle Patientenresourcen aus Actimi
+#verknüpfe given name mit observation m zeitstempel: 
+# Patient_main_obs holt alle Observations: Output lesbar in Terminal
+#post_obs funktioniert nicht
+
+#run_pipeline funktioniert nicht
 #muss noch eingepflegt werden, so ähnlich
 sync:
   schedule: false
@@ -23,21 +28,21 @@ sync:
 1. Konfiguration und Setup-Funktionen
 Diese laden und verarbeiten die YAML-Konfiguration und Umgebungsvariablen.
 
-parse_args(): Parst Kommandozeilenargumente (z.B. --dry-run, --config).
+a. parse_args(): Parst Kommandozeilenargumente (z.B. --dry-run, --config).
 
-Schritte: Erstellt einen ArgumentParser, definiert Optionen, parsed die Eingabe.
+b. Schritte: Erstellt einen ArgumentParser, definiert Optionen, parsed die Eingabe.
 load_config(path: Path): Lädt YAML-Konfigurationsdatei.
 
-Schritte: Öffnet die Datei, parsed YAML mit yaml.safe_load().
+c. Schritte: Öffnet die Datei, parsed YAML mit yaml.safe_load().
 load_env_file(path: Path): Lädt .env-Datei für Umgebungsvariablen.
 
-Schritte: Liest Zeilen, parsed KEY=VALUE, setzt os.environ falls nicht vorhanden.
+d. Schritte: Liest Zeilen, parsed KEY=VALUE, setzt os.environ falls nicht vorhanden.
 env_required(name: str): Holt erforderliche Umgebungsvariable.
 
-Schritte: Ruft os.getenv(), wirft Fehler falls fehlend.
+e. Schritte: Ruft os.getenv(), wirft Fehler falls fehlend.
 read_server(cfg, block_name): Extrahiert Server-Block aus Config.
 
-Schritte: Holt Dict aus cfg, prüft Typ.
+f. Schritte: Holt Dict aus cfg, prüft Typ.
 build_auth() / build_optional_auth(): Baut HTTP-Basic-Auth aus Config.
 
 Schritte: Holt User/Pass aus Env, erstellt HTTPBasicAuth-Objekt.

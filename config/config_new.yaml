@@ -9,18 +9,18 @@ sensdoc:
 
 # config.yaml
 # ✅ Fester Hashcode (nicht generieren!)
-fixed_code: "HGR2EWAE"
+fixed_code: "HGR2B3DZ"
 
 # ✅ Welche Patienten sollen betroffen sein?
 filter:
-  given: "HGR2EWAE"
-  family: "Araf"
-  birthDate: "1969-02-26"
+  given: "HGR2B3DZ"
+  family: "Marge"
+  birthDate: "1964-10-15"
 
-code_template: "{HGR2EWAE}{Araf}{1969-02-26}"
+code_template: "{HGR2B3DZ}{Marge}{1964-10-15}"
 
 # Optional: Format des Geburtsdatums (z. B. "YYYY-MM-DD")
-birthdate_format: "1974-02-04"
+birthdate_format: "1964-10-15"
 
 # Optional: Welche Felder sollen verwendet werden?
 fields:

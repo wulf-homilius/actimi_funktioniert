@@ -26,7 +26,7 @@ Given Name: HGR2HKQ9
 - 2026-04-25 09:14:05 Mitteleuropäische Sommerzeit: Heart Rate = 59 bpm
 
 Patient ID: 10984de1-2aa1-4b33-b9a6-b61d108bb25e
-Given Name: HA1V1V5N
+Given Name: HA1V1V5N 
 - 2026-04-07 12:24:23 Mitteleuropäische Sommerzeit: Blood Pressure = 164 mmHg
 - 2026-04-07 12:24:23 Mitteleuropäische Sommerzeit: Blood Pressure = 104 mmHg
 - 2026-04-07 12:24:23 Mitteleuropäische Sommerzeit: Heart Rate = 79 bpm
