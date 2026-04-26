@@ -1,0 +1,34 @@
+sensdoc:
+  database:
+    url: "http://194.163.128.215:4010"
+  auth:
+    user_env: "FHIR_USER_put"
+    pass_env: "FHIR_PASS_put"
+  resource:
+    name: "Patient"
+
+# config.yaml
+# ✅ Fester Hashcode (nicht generieren!)
+fixed_code: "HGR2EWAE"
+
+# ✅ Welche Patienten sollen betroffen sein?
+filter:
+  given: "HGR2EWAE"
+  family: "Araf"
+  birthDate: "1969-02-26"
+
+code_template: "{HGR2EWAE}{Araf}{1969-02-26}"
+
+# Optional: Format des Geburtsdatums (z. B. "YYYY-MM-DD")
+birthdate_format: "1974-02-04"
+
+# Optional: Welche Felder sollen verwendet werden?
+fields:
+  given: "given"
+  family: "family"
+  birthdate: "birthDate"
+
+given_keys: []
+patient_links: {}
+
+dry_run: false
