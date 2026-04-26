@@ -77,7 +77,6 @@ class Settings:
     communication_category_code: Optional[str]
     communication_category_display: Optional[str]
     communication_payloads: Dict[str, str]
-    observation_category_codings: List[Dict[str, str]]
 
 
 def parse_args() -> argparse.Namespace:
@@ -284,28 +283,6 @@ def build_settings(args: argparse.Namespace, cfg: Dict[str, Any]) -> Settings:
             else None
         ),
         communication_payloads=dict(sync_block.get("communication_payloads", {}) or {}),
-        observation_category_codings=[
-            {
-                "system": str(item.get("system", "")).strip(),
-                "code": str(item.get("code", "")).strip(),
-                **({"display": str(item.get("display", "")).strip()} if item.get("display") is not None and str(item.get("display", "")).strip() else {}),
-            }
-            for item in (sync_block.get("observation_categories", []) or [])
-            if isinstance(item, dict)
-            and str(item.get("system", "")).strip()
-            and str(item.get("code", "")).strip()
-        ] or [
-            {
-                "system": "http://hl7.org/fhir/observation-category",
-                "code": "vital-signs",
-                "display": "Vital Signs",
-            },
-            {
-                "system": "http://nursit-institute.com/fhir/observation-category",
-                "code": "vital-signs-ranges",
-                "display": "Vital Signs Ranges",
-            },
-        ],
     )
 
 
@@ -722,12 +699,7 @@ def _shallow_clone_observation(source: Dict[str, Any]) -> Dict[str, Any]:
     return json.loads(json.dumps(source))
 
 
-def build_target_observation(
-    source_observation: Dict[str, Any],
-    target_patient_id: str,
-    source_identifier_system: str,
-    settings: Settings,
-) -> Dict[str, Any]:
+def build_target_observation(source_observation: Dict[str, Any], target_patient_id: str, source_identifier_system: str) -> Dict[str, Any]:
     transformed = _shallow_clone_observation(source_observation)
     source_id = str(transformed.get("id", "")).strip()
     effective_datetime = extract_effective_datetime(transformed)
@@ -748,10 +720,17 @@ def build_target_observation(
     if effective_datetime:
         transformed["effectiveDateTime"] = effective_datetime
 
-    # Ensure vital sign category. Some Sensdoc views search for different category codings,
-    # so keep both the standard HL7 value and the nursit-specific range category by default.
+    # Ensure vital sign category
     transformed["category"] = [
-        {"coding": [dict(category) for category in settings.observation_category_codings]}
+        {
+            "coding": [
+                {
+                    "system": "http://hl7.org/fhir/observation-category",
+                    "code": "vital-signs",
+                    "display": "Vital Signs",
+                }
+            ]
+        }
     ]
 
     # Force final status for transferred observations
@@ -1334,12 +1313,7 @@ def _sync_patient(
             if encounter_ref is None:
                 encounter_ref = enc_ref
 
-            target_obs = build_target_observation(
-                observation,
-                sensdoc_id,
-                settings.source_identifier_system,
-                settings,
-            )
+            target_obs = build_target_observation(observation, sensdoc_id, settings.source_identifier_system)
             if enc_ref:
                 target_obs["encounter"] = {"reference": enc_ref}
             if settings.dry_run:

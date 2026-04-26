@@ -17,7 +17,7 @@ filter:
   family: "Marge"
   birthDate: "1964-10-15"
 
-code_template: "{HGR2B3DZ}{Marge}{1964-10-15}"
+code_template: "{Darius}{Marge}{1964-10-15}"
 
 # Optional: Format des Geburtsdatums (z. B. "YYYY-MM-DD")
 birthdate_format: "1964-10-15"

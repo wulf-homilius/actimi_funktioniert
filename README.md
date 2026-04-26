@@ -8,6 +8,8 @@
 # Patient_main_obs holt alle Observations: Output lesbar in Terminal
 #post_obs funktioniert nicht
 
+es wird nur die letzte Observation geladen und even if exists!!
+
 #run_pipeline funktioniert nicht
 #muss noch eingepflegt werden, so ähnlich
 sync:
