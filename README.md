@@ -50,9 +50,24 @@ Kapselt also den End-to-End-Workflow inkl. Iteration/Threads.
 # Patient_main_obs holt alle Observations: Output lesbar in Terminal
 
 # cleanup observation löscht diese aus de AKte
+
 #post_obs funktioniert nicht
+
 #cleanup_observations: python.exe .\cleanup_observations.py --cutoff-date 2026-04-25 Zeigt an
 #cleanup python.exe .\cleanup_observations.py --cutoff-date 2026-04-25 --apply löscht
+ cleanup_communication läuft nur wenn nicht schon alles gelöscht ist
+
+
+
+ wenn ein token abgelaufen ist:  
+ python.exe -c "
+import requests, json
+r = requests.post('https://ovok.api.actimi.health/v2/partner/Auth/token', 
+    headers={'content-type': 'application/json'},
+    json={'apiKey': 'O2SUM53XRT24E6XD1LWZDEHT'})
+print(r.status_code)
+print(json.dumps(r.json(), indent=2))
+"
 #optional auf codes beschränken:python.exe .\cleanup_observations.py --cutoff-date 2026-04-25 --code 8867-4 --apply
   #transfer_bp_only cd C:\Users\Frauke Wulf-Homilius\Code\actimi_funktioniert
 #python.exe .\transfer_bp_only.py --dry-run zum ausprobieren

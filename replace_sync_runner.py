@@ -1,4 +1,12 @@
-from __future__ import annotations
+"""
+Ersetzt sync_runner.py komplett mit der korrekten Version.
+Führen Sie dieses Skript aus dem Projektordner aus.
+"""
+from pathlib import Path
+import sys
+
+# Neue sync_runner.py direkt eingebettet
+NEW_CONTENT = r'''from __future__ import annotations
 
 import json
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -553,3 +561,12 @@ def sync(settings: Settings, workers: int = 4) -> None:
         f"encounter_created={totals['encounter_created']}, "
         f"dry_run={totals.get('dry_run', settings.dry_run)}"
     )
+'''
+
+path = Path("sync_runner.py")
+path.write_text(NEW_CONTENT, encoding="utf-8")
+lines = NEW_CONTENT.count("\n")
+print(f"sync_runner.py geschrieben ({lines} Zeilen)")
+print(f"reasonCode vorhanden: {'reasonCode' in NEW_CONTENT}")
+print(f"GROUP_MINUTES vorhanden: {'GROUP_MINUTES' in NEW_CONTENT}")
+print(f"group_key_for vorhanden: {'group_key_for' in NEW_CONTENT}")
