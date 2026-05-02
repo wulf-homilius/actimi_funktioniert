@@ -1,16 +1,71 @@
-# put verknüpft alphanum code mit givenname: put_given_code.py funktioniert
-# get all observation: import_requests.py !!funktioniert 
+# put- Given benutzt config_new.yaml -  verknüpft alphanum code mit givenname: put_given_code.py funktioniert
 
-# actimi_to_sensdoc.py funktioniert macht alles
+# get all observation: import_requests.py !!funktioniert mit actimi_to_sensdoc.yaml
+
+# actimi_to_sensdoc oder_3.py funktioniert macht alles!!
+
+# verify_akte_payload holt obs speichert in csv
+config_loader.py
+fhir_client.py
+transformations.py
+sync_runner.py
+Einstieg nutzt die Module: actimi_to_sensdoc.py
+config_loader.py
+
+Lädt YAML-Konfig (load_config) und .env (load_env_file).
+Liest Credentials aus Umgebungsvariablen.
+Baut die zentralen Laufzeit-Settings (Settings, build_settings) für alle anderen Module.
+Kapselt also alles rund um Konfiguration/Auth/Flags.
+fhir_client.py
+
+Stellt den gemeinsamen HTTP-Client (SESSION) bereit.
+Enthält FHIR-Header (FHIR_HEADERS).
+Führt GET-Requests mit Retry/Backoff aus (http_get_json).
+Hilfsfunktion zum Iterieren über FHIR Bundle/Listen (iter_resources).
+Kapselt also Transport/Netzwerk-Basislogik.
+transformations.py
+
+Enthält reine Datenlogik für Observation-Mapping.
+Liest Codes/Zeit (observation_codes, extract_effective_datetime).
+Erkennt/zerlegt Blutdruck (expand_observation_for_transfer).
+Konvertiert Actimi-value in FHIR-valueQuantity.
+Baut fertige SensDoc-Observation (build_target_observation).
+Kapselt also „Wie wird aus Quelle ein korrektes Zielobjekt“.
+sync_runner.py
+
+Orchestriert den kompletten Sync-Ablauf.
+Lädt Patienten/Observations (über fhir_client), matcht Patienten, filtert Zeitfenster/Codes.
+Führt Upsert (post_or_put_observation) und optional Communication-Erzeugung aus.
+Aggregiert Statistik und gibt Zusammenfassung aus.
+Kapselt also den End-to-End-Workflow inkl. Iteration/Threads.
+ 
+ # post_obs.py benutzt config_put_code_to_sensd.yaml
+
+# del_given löscht den zweiten  given name
+
+# ursprüng_to_sensdoc benutzt actimi_to_sensdoc.yaml macht!! das gleiche wie actimi_to sensdoc
 
 # get all pat ressource: request_Pat.py holt alle Patientenresourcen aus Actimi
 #verknüpfe given name mit observation m zeitstempel: 
 # Patient_main_obs holt alle Observations: Output lesbar in Terminal
-#post_obs funktioniert nicht
 
-# !!es wird nur die letzte Observation geladen und even if exists!!
+# cleanup observation löscht diese aus de AKte
+#post_obs funktioniert nicht
+#cleanup_observations: python.exe .\cleanup_observations.py --cutoff-date 2026-04-25 Zeigt an
+#cleanup python.exe .\cleanup_observations.py --cutoff-date 2026-04-25 --apply löscht
+#optional auf codes beschränken:python.exe .\cleanup_observations.py --cutoff-date 2026-04-25 --code 8867-4 --apply
+  #transfer_bp_only cd C:\Users\Frauke Wulf-Homilius\Code\actimi_funktioniert
+#python.exe .\transfer_bp_only.py --dry-run zum ausprobieren
+#python.exe .\transfer_bp_only.py  in echt
+#python.exe .\transfer_bp_only.py --window-minutes 129600
+
+
+
+
+
 
 #run_pipeline funktioniert nicht
+
 #muss noch eingepflegt werden, so ähnlich
 sync:
   schedule: false

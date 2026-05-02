@@ -628,7 +628,7 @@ Given Name: Ivan
 - 2026-03-07 15:48:51 Mitteleuropäische Zeit: Heart Rate = 81 bpm
 
 Patient ID: b20c7d0d-c12f-457c-ad81-32a0f63730b4
-Given Name: HGR2EWE1
+Given Name: HGR2EWE1 
 - 2026-04-09 14:22:15 Mitteleuropäische Sommerzeit: Blood Pressure = 145 mmHg
 - 2026-04-09 14:22:15 Mitteleuropäische Sommerzeit: Blood Pressure = 76 mmHg
 - 2026-04-09 14:22:15 Mitteleuropäische Sommerzeit: Heart Rate = 68 bpm
