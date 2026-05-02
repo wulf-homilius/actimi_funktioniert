@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import json
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -324,12 +324,20 @@ def find_or_create_encounter(
 def create_communication(base_url: str, auth: requests.auth.HTTPBasicAuth, *, patient_id: str, observation_ids: List[str], observation_codes: List[str], encounter_ref: Optional[str], settings: Settings, dry_run: bool) -> bool:
     if not observation_ids:
         return False
+    category_coding: Dict[str, Any] = {
+        "system": settings.communication_category_system,
+        "code": settings.communication_category_code or "vitalsign",
+    }
+    if settings.communication_category_display:
+        category_coding["display"] = settings.communication_category_display
     communication: Dict[str, Any] = {
         "resourceType": "Communication",
-        "status": "in-progress",
+        "status": settings.communication_status,
+        "category": [{"coding": [category_coding], "text": "Vital"}],
         "subject": {"reference": f"Patient/{patient_id}"},
-        "sent": datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z"),
+        "sent": datetime.now(timezone.utc).isoformat(timespec="milliseconds").replace("+00:00", "Z"),
         "about": [{"reference": f"Observation/{oid}"} for oid in observation_ids],
+        "reasonCode": [{"coding": [{"system": "http://www.nursiti.com/notificationReason", "code": "add"}], "text": "Ein neues Vitalzeichen wurde hinzugefügt"}],
         "payload": [{"contentString": settings.communication_payloads.get(code, "Vitalzeichen")} for code in observation_codes],
     }
     if encounter_ref:
