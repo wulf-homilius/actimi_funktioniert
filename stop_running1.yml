@@ -1,0 +1,17 @@
+sensdoc:
+  database:
+    url: "http://194.163.128.215:4010"
+  auth:
+    user_env: "FHIR_USER_put"
+    pass_env: "FHIR_PASS_put"
+
+filter:
+  patient_id: "90c6e470-eacb-4cf7-944d-9cb4da6a9196"
+
+# Diese Category-Codings werden aus Observation.category.coding entfernt
+# damit das "running" Vital-Sign-Attribut gestoppt wird.
+target_category_codings:
+  - system: "http://nursit-institute.com/fhir/observation-category"
+    code: "vital-signs-ranges"
+
+dry_run: false

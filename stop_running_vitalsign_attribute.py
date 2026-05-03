@@ -18,7 +18,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Remove/stop a running vital-sign category attribute for a single patient in SensDoc.",
     )
-    parser.add_argument("--config", default="config/stop_running.yaml", help="Path to YAML config")
+    parser.add_argument("--config", default="config/stop_running1.yaml", help="Path to YAML config")
     parser.add_argument("--env-file", default="config/.env", help="Path to .env file")
     parser.add_argument("--dry-run", action="store_true", help="Only print planned updates")
     parser.add_argument("--limit", type=int, default=200, help="FHIR page size")
