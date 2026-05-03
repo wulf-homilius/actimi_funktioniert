@@ -240,10 +240,11 @@ def find_or_create_encounter(
     patient_id: str,
     effective_dt: datetime,
     dry_run: bool,
-) -> Optional[str]:
+) -> Tuple[Optional[str], bool]:
     """
     Sucht einen Encounter im ±15-Minuten-Fenster um den Messzeitpunkt.
     Falls keiner existiert, wird ein neuer angelegt.
+    Gibt (encounter_ref, was_created) zurück.
     """
     timestamp_str = effective_dt.strftime("%Y-%m-%dT%H:%M:%SZ")
     window_start  = (effective_dt - timedelta(minutes=15)).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -269,7 +270,7 @@ def find_or_create_encounter(
             period_start = str((resource.get("period") or {}).get("start") or "")
             if window_start[:19] <= period_start[:19] <= window_end[:19]:
                 print(f"[INFO] Encounter gefunden: {enc_id} für Patient {patient_id} um {timestamp_str}")
-                return f"Encounter/{enc_id}"
+                return f"Encounter/{enc_id}", False  # ← gefunden, nicht neu erstellt
     except RuntimeError as exc:
         print(f"[WARN] Encounter-Suche fehlgeschlagen: {exc}")
 
@@ -290,7 +291,7 @@ def find_or_create_encounter(
 
     if dry_run:
         print(f"[DRY-RUN] Würde Encounter anlegen für Patient {patient_id} um {timestamp_str}")
-        return None
+        return None, False  # ← dry_run, nichts erstellt
 
     resp = SESSION.post(
         f"{base_url}/Encounter",
@@ -305,9 +306,7 @@ def find_or_create_encounter(
     if not enc_id:
         raise RuntimeError("POST Encounter: keine ID in der Antwort")
     print(f"[INFO] Encounter erstellt: {enc_id} für Patient {patient_id} um {timestamp_str}")
-    return f"Encounter/{enc_id}"
-
-
+    return f"Encounter/{enc_id}", True  # ← neu erstellt
 # ---------------------------------------------------------------------------
 
 def create_communication(base_url: str, auth: requests.auth.HTTPBasicAuth, *, patient_id: str, observation_ids: List[str], observation_codes: List[str], encounter_ref: Optional[str], settings: Settings, dry_run: bool) -> bool:
@@ -424,21 +423,21 @@ def _sync_patient(
         group_items = groups[gkey]
         ref_dt = min(dt for _, dt in group_items)
 
-        if gkey not in encounter_cache:
-            try:
-                enc_ref = find_or_create_encounter(
-                    settings.sensdoc_base,
-                    settings.sensdoc_auth,
-                    sensdoc_id,
-                    ref_dt,
-                    settings.dry_run,
-                )
-                encounter_cache[gkey] = enc_ref
-                if enc_ref:
-                    stats["encounter_created"] += 1
-            except RuntimeError as exc:
-                print(f"[WARN] Encounter für {gkey} fehlgeschlagen: {exc}")
-                encounter_cache[gkey] = None
+    if gkey not in encounter_cache:
+        try:
+            enc_ref, was_created = find_or_create_encounter(
+                settings.sensdoc_base,
+                settings.sensdoc_auth,
+                sensdoc_id,
+                ref_dt,
+                settings.dry_run,
+            )
+            encounter_cache[gkey] = enc_ref
+            if was_created:
+                stats["encounter_created"] += 1
+        except RuntimeError as exc:
+            print(f"[WARN] Encounter für {gkey} fehlgeschlagen: {exc}")
+            encounter_cache[gkey] = None
 
         encounter_ref = encounter_cache[gkey]
         observation_ids:   List[str] = []

@@ -37,7 +37,7 @@ dry_run    = "--dry-run" in sys.argv
 auth       = requests.auth.HTTPBasicAuth(user, pw)
 base       = "http://194.163.128.215:4010"
 headers    = {"Accept": "application/fhir+json", "Content-Type": "application/fhir+json"}
-patient_id = "d7fa4c18-5adf-46fa-9534-49f9f79b92ff"
+patient_id = "991fe909-0b20-44d0-976b-ecac5841e3bc"
 
 def fetch_all(resource_type, params):
     items = []

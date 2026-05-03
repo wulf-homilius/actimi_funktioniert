@@ -301,7 +301,7 @@ def main() -> int:
     text = render_readable_output(patients, observations)
     print(text)
 
-    out_path = root / "patient_observations_readable1.txt"
+    out_path = root / "patient_observations_readable2.txt"
     out_path.write_text(text, encoding="utf-8")
     print(f"Ausgabe gespeichert in: {out_path}")
     return 0

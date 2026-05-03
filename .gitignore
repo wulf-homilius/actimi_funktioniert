@@ -206,7 +206,7 @@ marimo/_static/
 marimo/_lsp/
 __marimo__/
 config_put_code_to_sensd.yaml
-config_put_to_code.yaml
 config/actimi_to_sensdoc.yaml
-config/actimi_to_sensdoc.yaml
-config.yaml
+config.del_given.yaml
+confignew.yaml
+stop_running.yaml

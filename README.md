@@ -39,7 +39,7 @@ Führt Upsert (post_or_put_observation) und optional Communication-Erzeugung aus
 Aggregiert Statistik und gibt Zusammenfassung aus.
 Kapselt also den End-to-End-Workflow inkl. Iteration/Threads.
  
- # post_obs.py benutzt config_put_code_to_sensd.yaml
+ # post_obs.py benutzt config_put_code_to_sensd.yaml never ending story!!!!
 
 # del_given löscht den zweiten  given name
 

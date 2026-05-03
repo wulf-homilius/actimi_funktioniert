@@ -6,7 +6,7 @@
     pass_env: "FHIR_PASS_put"
 
 filter:
-  patient_id: "d7fa4c18-5adf-46fa-9534-49f9f79b92ff"
+  patient_id: "991fe909-0b20-44d0-976b-ecac5841e3bc"
 
 # Diese Category-Codings werden aus Observation.category.coding entfernt
 # damit das "running" Vital-Sign-Attribut gestoppt wird.
